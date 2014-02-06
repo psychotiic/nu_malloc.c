@@ -1,3 +1,4 @@
+
 #include "nu_malloc.h"
 
 
@@ -6,35 +7,33 @@ void* nu_calloc(size_t count, size_t size)
 void *block = nu_malloc(count * size);
     if(block != NULL)
         memset(block, 0, count * size);
-//printf("%d \n",block);
-   // return block;  
 return NULL;  
 } 
 
 
 void* nu_realloc(void* ptr, size_t size) 
-{printf("we are in the realloc");
+{printf("we are in the realloc - heap mem pointer = ");
   heap_memory* Ptr;
    ptr = Ptr->next;
    printf("%d",ptr);
-   ptr = NULL;
-   printf("%d",ptr);
+  void *block = nu_malloc(size);
+   printf("%d",ptr); printf(" this is the Mem pointer\n");
   return NULL; 
 }
 
 void nu_free(void* ptr)
 {
-  heap_memory *temp=&mlist; 
-while(temp){ 
+ heap_memory *temp=&mlist; 
+//while(ptr){ 
 heap_size=HEAP_MEMORY; 
-mlist.next=NULL; 
+ptr = mlist.next;
 mlist.size=heap_size; 
 mlist.is_available=MEMORY_AVAILABLE; 
-mlist.memory=raw_memory; 
-return 1; 
+//return 1; 
 temp=temp->next; 
+//} 
+ 
 } 
-}
 void* nu_malloc(size_t size)
 { 
 if ( size <= 0 ) { 
@@ -68,7 +67,7 @@ printf("\nNo Memory Available\n");
 return NULL; 
 } 
 
-void print_heap_allocations(){ 
+void printHeap(){ 
 heap_memory *temp=&mlist; 
 
 printf("\n\tSize\tMemory-Ptr"); 
@@ -83,29 +82,30 @@ printf("\n");
 int main() { 
 init_memory_mgr(); 
 
-print_heap_allocations(); 
+printHeap(); 
 void * m; 
 m=nu_malloc(10); 
 printf("\nallocated bytes:0x%x\n",m); 
-print_heap_allocations(); 
+printHeap(); 
 
 m=nu_malloc(20); 
 printf("\nallocated bytes:0x%x\n",m); 
-print_heap_allocations(); 
+printHeap(); 
 
 m=nu_malloc(10); 
 printf("\nallocated bytes:0x%x\n",m); 
-print_heap_allocations(); 
+printHeap(); 
 
 m=nu_malloc(8); 
 printf("\nallocated bytes:0x%x\n",m); 
-print_heap_allocations(); 
-//nu_free(10);
-nu_calloc(10,10);
+printHeap(); 
+nu_free(*"804a4e0");
+nu_calloc(40,10);
+printf("\nfreeing of bytes was done here test\n");
  heap_memory* Ptr;
 nu_realloc(Ptr->next,15);
 m=nu_malloc(100); 
 printf("\nallocated bytes:0x%x\n",m); 
-print_heap_allocations();
+printHeap();
 return 1; 
 }
